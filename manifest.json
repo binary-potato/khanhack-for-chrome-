@@ -1,0 +1,10 @@
+{
+  "manifest_version": 1,
+  "name": "KhanHack",
+  "description": "A simple way to reveal answers on khan academy",
+  "version": "5.0",
+  "action": {
+    "default_popup": "hello.html",
+    "default_icon": "hello_extensions.png"
+  }
+}
