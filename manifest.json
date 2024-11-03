@@ -1,5 +1,5 @@
 {
-  "manifest_version": 1,
+  "manifest_version": 2,
   "name": "KhanHack",
   "description": "A simple way to reveal answers on khan academy",
   "version": "5.0",
