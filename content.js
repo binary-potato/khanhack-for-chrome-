@@ -347,76 +347,51 @@ setMainMenuContent();
 setCopiedContent();
 
 let originalJson = JSON.parse;
-JSON.parse = function (jsonString) {
-    let parsedData = originalJson(jsonString);
-
-    try {
-        if (parsedData.data && parsedData.data.assessmentItem && parsedData.data.assessmentItem.item) {
-
-            let itemData = JSON.parse(parsedData.data.assessmentItem.item.itemData);
-            let hasGradedWidget = Object.values(itemData.question.widgets).some(widget => widget.graded === true);
-            if (hasGradedWidget) {
-
-
-                for (let widgetKey in itemData.question.widgets) {
-
-
-
-                    let widget = itemData.question.widgets[widgetKey];
-
-                    switch (widget.type) {
-                        case "numeric-input":
-                            handleNumeric(widget);
-                            break;
-                        case "radio":
-                            handleRadio(widget);
-                            break;
-                        case "expression":
-                            handleExpression(widget);
-                            break;
-                        case "dropdown":
-                            handleDropdown(widget);
-                            break;
-                        case "interactive-graph":
-                            handleIntGraph(widget);
-                            break;
-                        case "grapher":
-                            handleGrapher(widget);
-                            break;
-                        case "input-number":
-                            handleInputNum(widget);
-                            break;
-                        case "matcher":
-                            handleMatcher(widget);
-                            break;
-                        case "categorizer":
-                            handleCateg(widget);
-                            break;
-                        case "label-image":
-                            handleLabel(widget);
-                            break;
-                         case "matrix":
-                            handleMatrix(widget);
-                            break;
-                        default:
-                            console.log("Unknown widget: " + widget.type);
-                            break;
+// content.js
+// Wait for page to be fully loaded
+window.addEventListener('load', () => {
+    // Inject the original script's UI elements
+    let mainMenu = document.createElement('div');
+    mainMenu.id = 'mainMenu';
+    // ... (keep all the original UI setup code)
+    
+    // The key modification is in how we intercept the JSON
+    const originalFetch = window.fetch;
+    window.fetch = async function(...args) {
+        const response = await originalFetch.apply(this, args);
+        
+        // Clone the response so we can read it multiple times
+        const clone = response.clone();
+        
+        // Only intercept Khan Academy API responses
+        if (response.url.includes('khanacademy.org/api/')) {
+            try {
+                const json = await clone.json();
+                
+                // Add a small delay to ensure the page has processed the response
+                setTimeout(() => {
+                    if (json.data && json.data.assessmentItem && json.data.assessmentItem.item) {
+                        let itemData = JSON.parse(json.data.assessmentItem.item.itemData);
+                        // ... (rest of your answer processing logic)
                     }
-                }
-
-                if (currentCombinedAnswer.trim() !== '') {
-                    addAnswerBlock(currentCombinedAnswer);
-                    currentCombinedAnswer = '';
-                }
+                }, 500);
+            } catch (e) {
+                console.log('Error intercepting response:', e);
             }
         }
-    } catch (error) {
-        console.log("Error parsing JSON:", error);
-    }
+        
+        return response;
+    };
 
-    return parsedData;
-};
+    // Initialize your UI
+    document.body.appendChild(mainMenu);
+    document.body.appendChild(copied);
+    setMainMenuContent();
+    setCopiedContent();
+});
 
+// Keep all your original helper functions here
+// (addAnswerBlock, handleRadio, handleNumeric, etc.)
 function cleanLatexExpression(answer) {
     return answer
        //.replace(/\\times/g, '×')
