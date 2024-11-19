@@ -9,11 +9,6 @@
   ],
   "content_scripts": [{
     "matches": ["*://*.khanacademy.org/*"],
-    "js": ["content.js"],
-    "css": ["styles.css"]
-  }],
-  "web_accessible_resources": [{
-    "resources": ["*.png", "*.svg"],
-    "matches": ["*://*.khanacademy.org/*"]
+    "js": ["content.js"]
   }]
 }
