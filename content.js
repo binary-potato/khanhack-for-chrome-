@@ -13,6 +13,26 @@
 //ALL FOLLOWING CODE IS UNDER THE KHANHACK TRADEMARK. UNAUTHORIZED DISTRIBUTION CAN/WILL RESULT IN LEGAL ACTION
 
 //Note that KhanHack™ is an independent initiative and is not affiliated with or endorsed by Khan Academy. We respect the work of Khan Academy and its mission to provide free education, but KhanHack™ operates separately with its own unique goals.
+// Inject script to override JSON.parse
+const injectScript = `
+    const originalJson = JSON.parse;
+    JSON.parse = function (jsonString) {
+        let parsedData = originalJson(jsonString);
+        try {
+            if (parsedData.data && parsedData.data.assessmentItem && parsedData.data.assessmentItem.item) {
+                // Your existing JSON.parse override code
+            }
+        } catch (error) {
+            console.log("Error parsing JSON:", error);
+        }
+        return parsedData;
+    };
+`;
+
+const script = document.createElement('script');
+script.textContent = injectScript;
+(document.head || document.documentElement).appendChild(script);
+script.remove();
 
 let mainMenu = document.createElement('div');
 mainMenu.id = 'mainMenu';
