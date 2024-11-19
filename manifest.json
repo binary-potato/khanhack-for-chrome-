@@ -3,18 +3,12 @@
   "name": "KhanHack",
   "version": "5.7.1",
   "description": "Khan Academy Answer Hack",
-  "permissions": [
-    "activeTab",
+  "permissions": ["activeTab"],
+  "host_permissions": [
     "*://*.khanacademy.org/*"
   ],
-  "content_scripts": [
-    {
-      "matches": [
-        "*://*.khanacademy.org/*"
-      ],
-      "js": [
-        "content.js"
-      ]
-    }
-  ]
+  "content_scripts": [{
+    "matches": ["*://*.khanacademy.org/*"],
+    "js": ["content.js"]
+  }]
 }
