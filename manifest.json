@@ -6,15 +6,15 @@
   "permissions": [
     "activeTab",
     "*://*.khanacademy.org/*"
+  ],
   "content_scripts": [
-      {
-          "matches": [
-              "*://*.khanacademy.org/*"
-          ],
-          "js": [
-              "content.js"
-          ]
-      }
+    {
+      "matches": [
+        "*://*.khanacademy.org/*"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
   ]
 }
-
